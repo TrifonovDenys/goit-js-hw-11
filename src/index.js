@@ -2,6 +2,7 @@ import './css/style.css';
 import { fetchApi } from './pixabayAPI.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import Notiflix from 'notiflix';
 
 const div = document.querySelector('.gallery');
 const form = document.querySelector('#search-form');
@@ -11,18 +12,22 @@ form.addEventListener('click', onClick);
 
 function onClick(e) {
   e.preventDefault();
-  div.innerHTML = '';
 
   if (e.target.nodeName === 'BUTTON') {
     fetchApi(lable.value)
       .then(data => {
-        div.insertAdjacentHTML('beforeend', marckup(data.hits));
+        console.log(lable.value);
+        div.innerHTML =  marckup(data.hits)
         new SimpleLightbox('.gallery a', {
           captionsData: 'alt',
           captionDelay: 250,
         });
+        
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        Notiflix.Notify.warning("Sorry, there are no images matching your search query. Please try again.");
+        console.log(err)
+      });
   }
 }
 
@@ -43,16 +48,16 @@ function marckup(arr) {
   <img src="${webformatURL}" alt="${tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
-      <b>Likes: ${likes}</b>
+      <b>Likes:</b> <span> ${likes}</span>
     </p>
     <p class="info-item">
-      <b>Views: ${views}</b>
+      <b>Views:</b> <span> ${views}</span>
     </p>
     <p class="info-item">
-      <b>Comments: ${comments}</b>
+      <b>Comments:</b> <span> ${comments}</span>
     </p>
     <p class="info-item">
-      <b>Downloads: ${downloads}</b>
+      <b>Downloads:</b> <span> ${downloads}</span>
     </p>
   </div>
   </a>

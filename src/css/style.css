@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  margin: 0;
 }
 
 body {
@@ -11,10 +12,15 @@ body {
   color: #212121;
   line-height: 1.5;
 }
-
+a{
+  text-decoration: none;
+  display: flex;
+    flex-direction: column;
+}
 img{
   display: block;
   max-width: 100%;
+  
   /* width: 200px; */
 }
 
@@ -22,8 +28,53 @@ img{
   display: flex;
   flex-wrap: wrap;
   gap: 10px 20px;
+  padding: 80px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+
 }
 
 .photo-card{
   flex-basis: calc((100% - 72px) / 4);
+  max-height: 400px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 5px -1px;
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease-in;
+}
+.photo-card:hover {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 0.5px -1px;
+  
+}
+.photo-card img{
+  max-height: 200px;
+  min-height: 200px;
+}
+
+.search-form{
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  width: 100%;
+  background: #5065be;
+
+}
+
+.info{
+  padding: 10px 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-decoration: none;
+}
+.info-item{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 11px;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.7);
 }
