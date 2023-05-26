@@ -3,7 +3,8 @@ const KEY_API = '36775781-ef40f42b03ba5b079902920a8'
 
 export function fetchApi(subject) {
   const subjectstr = subject.split(' ').join('+')
-  return fetch(`${URL_API}/?key=${KEY_API}&q=${subject}&image_type=photo`)
+  const n = 1
+  return fetch(`${URL_API}/?key=${KEY_API}&q=${subject}&image_type=photo&page=${n}&per_page=40`)
     .then(res => {
       if (!res.ok) {
         throw new Error(res.statusText)
