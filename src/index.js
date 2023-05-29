@@ -1,10 +1,8 @@
 import './css/style.css';
 import { fetchApi } from './pixabayAPI.js';
-// import { marckUp } from './marckup.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
-import axios from 'axios';
 
 const div = document.querySelector('.gallery');
 const form = document.querySelector('#search-form');
@@ -26,24 +24,24 @@ async function getEvents(word, page) {
   await fetchApi(word, page)
     .then(data => {
       console.log(page);
-      console.log(data);
-      div.innerHTML = famarckUp(data.hits);
+      console.log(data.data.hits);
+      div.innerHTML = famarckUp(data.data.hits);
       const i = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
       });
       i.refresh();
 
-      if (data.hits.length === 0) {
+      if (data.data.hits.length === 0) {
         btnMore.style.display = 'none';
         return Notiflix.Notify.warning(
           'Sorry, there are no images matching your search query. Please try again.'
         );
       }
-      if (data.hits.length > 1 && page === 1) {
+      if (data.data.hits.length > 1 && page === 1) {
         btnMore.style.display = 'block';
         return Notiflix.Notify.success(
-          `Hooray! We found ${data.totalHits} images.`
+          `Hooray! We found ${data.data.totalHits} images.`
         );
       }
     })
@@ -55,14 +53,14 @@ async function getEvents(word, page) {
 async function LoadMore(word, page) {
   await fetchApi(word, page)
     .then(data => {
-      div.insertAdjacentHTML('beforeend', famarckUp(data.hits));
+      div.insertAdjacentHTML('beforeend', famarckUp(data.data.hits));
       const i = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
       });
       i.refresh();
       m += 40;
-      if (m >= data.totalHits) {
+      if (m >= data.data.totalHits) {
         return Notiflix.Notify.warning(
           "We're sorry, but you've reached the end of search results."
         );
@@ -81,7 +79,7 @@ function onLoadMore() {
 }
 
 function famarckUp(arr) {
-  const a = arr
+  return arr
     .map(
       ({
         comments,
@@ -113,6 +111,4 @@ function famarckUp(arr) {
 </div>`
     )
     .join('');
-  return a;
-  // div.insertAdjacentHTML('beforeend', a);
 }
