@@ -9,22 +9,26 @@ const div = document.querySelector('.gallery');
 const form = document.querySelector('#search-form');
 const btnMore = document.querySelector('.load-more');
 btnMore.style.display = 'none';
-let page = 1;
+let page;
 let word = '';
 let m = 40;
 
 form.addEventListener('submit', onFormSearch);
+btnMore.addEventListener('click', onLoadMore);
 
 function onFormSearch(e) {
   e.preventDefault();
-
   word = e.target.elements.searchQuery.value;
+  page = 1;
   getEvents(word, page);
 }
 
-function getEvents(word, page) {
-  page = 1;
+function onLoadMore() {
+  page++;
+  LoadMore(word, page);
+}
 
+function getEvents(word, page) {
   fetchApi(word, page)
     .then(data => {
       div.innerHTML = createMarckup(data.data.hits);
@@ -71,11 +75,4 @@ function LoadMore(word, page) {
     .catch(err => {
       console.log(err);
     });
-}
-
-btnMore.addEventListener('click', onLoadMore);
-
-function onLoadMore() {
-  page++;
-  LoadMore(word, page);
 }
