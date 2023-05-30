@@ -110,3 +110,23 @@ img{
   outline: none;
   cursor: pointer;
 }
+@media (max-width: 1200px){
+  .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      padding: 80px 0 40;
+      max-width: 767px;
+      margin: 0 auto;
+      justify-content: space-around;
+    }
+  .photo-card {
+    max-width: 300px;
+    flex-basis: calc((100% - 30px) / 2);
+  }
+}
+@media (max-width: 766px) {
+  .photo-card {
+    max-width: 250px;
+  }
+}
