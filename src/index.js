@@ -5,6 +5,7 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import { createMarckup } from './marckup.js';
 import { ref } from './reference.js';
+import { smoothScroll } from './smoothScroll.js';
 
 let page;
 let word = '';
@@ -61,6 +62,9 @@ async function LoadMore(word, page) {
       captionDelay: 250,
     });
     i.refresh();
+
+    smoothScrol();
+
     ref.hitsOnLoad += 40;
     if (ref.hitsOnLoad >= data.data.totalHits) {
       return Notiflix.Notify.warning(
