@@ -2,7 +2,7 @@ const URL_API = 'https://pixabay.com/api/';
 const KEY_API = '36775781-ef40f42b03ba5b079902920a8';
 const axios = require('axios').default;
 
-export async function fetchApi(keywords, page) {
+export function fetchApi(keywords, page) {
   const params = new URLSearchParams({
     key: KEY_API,
     q: keywords,
@@ -12,15 +12,5 @@ export async function fetchApi(keywords, page) {
     page,
     per_page: 40,
   });
-
-  // return fetch(`${URL_API}?${params}`).then(res => {
-  //   if (!res.ok) {
-  //     throw new Error(res.statusText);
-  //   }
-  //   return res.json();
-  // });
-
-  return axios.get(`${URL_API}?${params}`).then(res => {
-    return res;
-  });
+  return axios.get(`${URL_API}?${params}`).then(res => res);
 }

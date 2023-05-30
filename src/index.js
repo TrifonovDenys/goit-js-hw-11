@@ -3,6 +3,7 @@ import { fetchApi } from './pixabayAPI.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
+import { createMarckup } from './marckup.js';
 
 const div = document.querySelector('.gallery');
 const form = document.querySelector('#search-form');
@@ -11,21 +12,22 @@ btnMore.style.display = 'none';
 let page = 1;
 let word = '';
 let m = 40;
-form.addEventListener('submit', onClick);
 
-function onClick(e) {
+form.addEventListener('submit', onFormSearch);
+
+function onFormSearch(e) {
   e.preventDefault();
 
   word = e.target.elements.searchQuery.value;
   getEvents(word, page);
 }
 
-async function getEvents(word, page) {
-  await fetchApi(word, page)
+function getEvents(word, page) {
+  page = 1;
+
+  fetchApi(word, page)
     .then(data => {
-      console.log(page);
-      console.log(data.data.hits);
-      div.innerHTML = famarckUp(data.data.hits);
+      div.innerHTML = createMarckup(data.data.hits);
       const i = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
@@ -50,10 +52,10 @@ async function getEvents(word, page) {
     });
 }
 
-async function LoadMore(word, page) {
-  await fetchApi(word, page)
+function LoadMore(word, page) {
+  fetchApi(word, page)
     .then(data => {
-      div.insertAdjacentHTML('beforeend', famarckUp(data.data.hits));
+      div.insertAdjacentHTML('beforeend', createMarckup(data.data.hits));
       const i = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
@@ -74,41 +76,6 @@ async function LoadMore(word, page) {
 btnMore.addEventListener('click', onLoadMore);
 
 function onLoadMore() {
-  page += 1;
+  page++;
   LoadMore(word, page);
-}
-
-function famarckUp(arr) {
-  return arr
-    .map(
-      ({
-        comments,
-        downloads,
-        views,
-        likes,
-        largeImageURL,
-        tags,
-        webformatURL,
-      }) =>
-        `<div class="photo-card">
-   <a href="${largeImageURL}">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" width="300" heigth='200' />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes:</b> <span> ${likes}</span>
-    </p>
-    <p class="info-item">
-      <b>Views:</b> <span> ${views}</span>
-    </p>
-    <p class="info-item">
-      <b>Comments:</b> <span> ${comments}</span>
-    </p>
-    <p class="info-item">
-      <b>Downloads:</b> <span> ${downloads}</span>
-    </p>
-  </div>
-  </a>
-</div>`
-    )
-    .join('');
 }
