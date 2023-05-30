@@ -4,17 +4,13 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import { createMarckup } from './marckup.js';
+import { ref } from './reference.js';
 
-const div = document.querySelector('.gallery');
-const form = document.querySelector('#search-form');
-const btnMore = document.querySelector('.load-more');
-btnMore.style.display = 'none';
 let page;
 let word = '';
-let m = 40;
 
-form.addEventListener('submit', onFormSearch);
-btnMore.addEventListener('click', onLoadMore);
+ref.form.addEventListener('submit', onFormSearch);
+ref.btnMore.addEventListener('click', onLoadMore);
 
 function onFormSearch(e) {
   e.preventDefault();
@@ -24,28 +20,29 @@ function onFormSearch(e) {
 }
 
 function onLoadMore() {
-  page++;
+  page += 1;
   LoadMore(word, page);
 }
 
 function getEvents(word, page) {
   fetchApi(word, page)
     .then(data => {
-      div.innerHTML = createMarckup(data.data.hits);
+      const hits = data.data.hits;
+      ref.div.innerHTML = createMarckup(hits);
       const i = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
       });
       i.refresh();
 
-      if (data.data.hits.length === 0) {
-        btnMore.style.display = 'none';
+      if (hits.length === 0) {
+        ref.btnMore.style.display = 'none';
         return Notiflix.Notify.warning(
           'Sorry, there are no images matching your search query. Please try again.'
         );
       }
-      if (data.data.hits.length > 1 && page === 1) {
-        btnMore.style.display = 'block';
+      if (hits.length > 1 && page === 1) {
+        ref.btnMore.style.display = 'block';
         return Notiflix.Notify.success(
           `Hooray! We found ${data.data.totalHits} images.`
         );
@@ -59,14 +56,14 @@ function getEvents(word, page) {
 function LoadMore(word, page) {
   fetchApi(word, page)
     .then(data => {
-      div.insertAdjacentHTML('beforeend', createMarckup(data.data.hits));
+      ref.div.insertAdjacentHTML('beforeend', createMarckup(data.data.hits));
       const i = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
       });
       i.refresh();
-      m += 40;
-      if (m >= data.data.totalHits) {
+      ref.hitsOnLoad += 40;
+      if (ref.hitsOnLoad >= data.data.totalHits) {
         return Notiflix.Notify.warning(
           "We're sorry, but you've reached the end of search results."
         );
