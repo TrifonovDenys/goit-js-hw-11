@@ -63,7 +63,7 @@ async function LoadMore(word, page) {
     });
     i.refresh();
 
-    smoothScrol();
+    smoothScroll();
 
     ref.hitsOnLoad += 40;
     if (ref.hitsOnLoad >= data.data.totalHits) {
