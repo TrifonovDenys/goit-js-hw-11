@@ -27,6 +27,7 @@ function onLoadMore() {
 
 async function getEvents(word, page) {
   try {
+    Scroll.smoothScrollTop();
     const data = await fetchApi(word, page);
     const hits = data.data.hits;
     ref.div.innerHTML = createMarckup(hits);
@@ -35,8 +36,6 @@ async function getEvents(word, page) {
       captionDelay: 250,
     });
     i.refresh();
-
-    Scroll.smoothScrollTop();
 
     if (hits.length === 0) {
       ref.btnMore.style.display = 'none';
