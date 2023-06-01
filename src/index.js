@@ -10,6 +10,11 @@ import * as Scroll from './smoothScroll.js';
 let page;
 let word = '';
 
+const i = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 ref.form.addEventListener('submit', onFormSearch);
 ref.btnMore.addEventListener('click', onLoadMore);
 
@@ -31,10 +36,6 @@ async function getEvents(word, page) {
     const data = await fetchApi(word, page);
     const hits = data.data.hits;
     ref.div.innerHTML = createMarckup(hits);
-    const i = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
     i.refresh();
 
     if (hits.length === 0) {
@@ -46,7 +47,7 @@ async function getEvents(word, page) {
     if (hits.length > 1 && page === 1) {
       ref.btnMore.style.display = 'block';
       return Notiflix.Notify.success(
-        `Hooray! We found ${data.data.totalHits} images.`
+        `Hooray! We found ${data.data.total} images.`
       );
     }
   } catch (error) {
@@ -58,10 +59,6 @@ async function LoadMore(word, page) {
   try {
     const data = await fetchApi(word, page);
     ref.div.insertAdjacentHTML('beforeend', createMarckup(data.data.hits));
-    const i = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
     i.refresh();
 
     Scroll.smoothScroll();
